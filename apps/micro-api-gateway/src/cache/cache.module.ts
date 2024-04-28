@@ -10,7 +10,7 @@ import { redisStore } from 'cache-manager-redis-store';
       isGlobal: true,
       useFactory: async () => ({
         store: redisStore,
-        url: config.redisUrl,
+        url: config.REDIS_URL,
       }),
     } as CacheModuleAsyncOptions),
   ],

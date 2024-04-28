@@ -7,9 +7,7 @@ import * as fileUpload from 'express-fileupload';
 import { config } from './config';
 import helmet from 'helmet';
 import { ValidationPipe } from '@nestjs/common';
-import { PermissionGuard } from './guard/permission.guard';
 import { authTokenMiddleware } from './middlewares/auth.token.middleware';
-import { CacheService } from './cache/cache.service';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 
@@ -17,12 +15,12 @@ async function bootstrap() {
   console.log(join(__dirname, '../../micro-user-service'));
   const app = await NestFactory.create(AppModule);
 
-  const cacheService = app.get(CacheService);
+  // const cacheService = app.get(CacheService);
   const secret = config.SECRET_KEY;
   app.use(cookieParser(secret));
   app.use(authTokenMiddleware);
   app.useGlobalPipes(new ValidationPipe());
-  app.useGlobalGuards(new PermissionGuard(cacheService));
+  // app.useGlobalGuards(new PermissionGuard(cacheService));
   app.use(bodyParser.json());
   app.use(
     fileUpload({

@@ -5,27 +5,28 @@ import {
   NestMiddleware,
   UnauthorizedException,
 } from '@nestjs/common';
-import { CacheService } from '../cache/cache.service';
+// import { CacheService } from '../cache/cache.service';
 import { error } from '../utils/responses';
 import { Request, Response } from 'express';
 import { AuthorizationService } from './authorization.service';
 import { JwtService } from '@nestjs/jwt';
+import { config } from '../config';
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
-    @Inject(CacheService) private readonly cacheService: CacheService,
+    // @Inject(CacheService) private readonly cacheService: CacheService,
     @Inject(AuthorizationService)
     private readonly authSvc: AuthorizationService,
     private jwt: JwtService,
   ) {}
 
   async use(req: Request, res: Response, next: () => any) {
-    let secret = await this.cacheService.get('app::secret');
-    if (!secret) {
-      await this.authSvc.getSecretKey();
-      secret = await this.cacheService.get('app::secret');
-    }
-
+    // let secret = await this.cacheService.get('app::secret');
+    // if (!secret) {
+    //   await this.authSvc.getSecretKey();
+    //   secret = await this.cacheService.get('app::secret');
+    // }
+    let secret = config.SECRET_KEY;
     let token = '';
     const reqClone: any = Object.assign({}, req);
     if (reqClone.signedCookies && reqClone.signedCookies.accessToken) {
@@ -58,11 +59,11 @@ export class AuthMiddleware implements NestMiddleware {
 
     try {
       const { userId } = await this.jwt.verifyAsync(token, { secret });
-      let user = await this.authSvc.getUserAuthority(userId);
+      let user = await this.authSvc.getUserbyId(userId);
       user = typeof user === 'string' ? JSON.parse(user) : user;
       // attached authenticated user to header
 
-      if (user.active === false) {
+      if (user?.active === false) {
         throw new UnauthorizedException();
       }
 

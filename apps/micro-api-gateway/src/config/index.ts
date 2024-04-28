@@ -12,8 +12,9 @@ const schemaValidate = joi
       .string()
       .valid('development', 'dev', 'staging', 'production')
       .required(),
-    POST_SVC: joi.string().required(),
+    USER_SVC: joi.string().required(),
     SECRET_KEY: joi.string(),
+    REDIS_URL: joi.string(),
   })
   .unknown()
   .required();
@@ -30,4 +31,5 @@ export const config = {
   userServiceUrl: envVar.POST_SVC,
   redisUrl: envVar.REDIS_URL,
   SECRET_KEY: envVar.SECRET_KEY,
+  REDIS_URL: envVar.REDIS_URL,
 };

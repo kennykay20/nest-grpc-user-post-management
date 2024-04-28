@@ -1,7 +1,14 @@
-import { Controller, Delete, Inject, Post, Put, Req, Res } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Inject,
+  Post,
+  Put,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { ProxyService } from '../proxy';
 import { UserService } from '../user/user.service';
-import { CacheService } from '../cache/cache.service';
 import { TYPES } from '../utils/types';
 import { Request, Response } from 'express';
 
@@ -10,7 +17,6 @@ export class PostController {
   constructor(
     @Inject(ProxyService) private readonly proxyService: ProxyService,
     @Inject(UserService) private readonly userService: UserService,
-    @Inject(CacheService) private readonly cacheService: CacheService,
   ) {}
 
   @Post('/')

@@ -23,4 +23,4 @@ proto buffer compiler written in a bash script, you will need to run this protoc
 - for clarification, the .env file contains required information, which are rendered in the config/index.ts file with extraction with a Joi library and dotenv, if the required field are not found, we will get an error.
 
 
-## I couldn't finish up with this project cos of the postgres issue i am having on my laptop and the time given as well, 
+## I couldn't finish up with this project cos of the time given, I would have needed 3 days to finish but because of GRPC  with the protobuff, Assuming it's a RESTAPI pattern it would have been more faster, if you can still give me more time I will love to finish this.. Regards 

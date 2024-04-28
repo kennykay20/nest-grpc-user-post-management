@@ -13,7 +13,7 @@ async function bootstrap() {
       options: {
         package: USER_PACKAGE_NAME,
         url: `0.0.0.0:${config.port}`,
-        protoPath: join(__dirname, '../../post/post/post.proto'),
+        protoPath: join(__dirname, '../../micro-user-service/user/user.proto'),
       },
     },
   );
