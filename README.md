@@ -20,7 +20,7 @@ proto buffer compiler written in a bash script, you will need to run this protoc
 - 
 
 # we have the .env file, in a real app we don't expose it, one of the reason why we have .gitignore where it's been added 
-- for clarification, the .env file contains required information, which are rendered in the config/index.ts file with extraction with a Joi library and dotenv, if the required field are not found, we will get an error.
+- for clarification, the .env file contains required information, which are rendered in the config/index.ts file with extraction with a Joi library and dotenv, if the required field are not found, we will get an error. you can check the .env.example how the .env to look like.
 
 
 ## I couldn't finish up with this project cos of the time given, I would have needed 3 days to finish but because of GRPC  with the protobuff, Assuming it's a RESTAPI pattern it would have been more faster, if you can still give me more time I will love to finish this.. Regards 
