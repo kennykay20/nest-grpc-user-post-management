@@ -21,6 +21,12 @@ export class Post {
   @Column()
   content: string;
 
+  @Column()
+  selectCategory: string;
+
+  @Column({ type: 'boolean', default: false })
+  isDelete: boolean;
+
   @CreateDateColumn({ type: 'timestamp with time zone' })
   createdAt: Date;
 

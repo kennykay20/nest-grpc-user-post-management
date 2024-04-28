@@ -10,8 +10,11 @@ import { ValidationPipe } from '@nestjs/common';
 import { PermissionGuard } from './guard/permission.guard';
 import { authTokenMiddleware } from './middlewares/auth.token.middleware';
 import { CacheService } from './cache/cache.service';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { join } from 'path';
 
 async function bootstrap() {
+  console.log(join(__dirname, '../../micro-user-service'));
   const app = await NestFactory.create(AppModule);
 
   const cacheService = app.get(CacheService);
@@ -34,6 +37,16 @@ async function bootstrap() {
       contentSecurityPolicy: false,
     }),
   );
+  const configs = new DocumentBuilder()
+    .setTitle('nest_grpc_api')
+    .setDescription('The User Management Post api ')
+    .setVersion('1.0')
+    .addTag('micro_service')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, configs);
+  SwaggerModule.setup('API', app, document);
+
   await app.listen(config.port, () =>
     console.log(`api-gateway running on ${config.port}`),
   );

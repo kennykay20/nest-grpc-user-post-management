@@ -39,11 +39,11 @@ export interface User {
   firstName: string;
   lastName: string;
   imageUrl: string;
-  postDetails: PostDetails | undefined;
   createAt: string;
   updateAt: string;
   username: string;
   phone: string;
+  token: string;
 }
 
 export interface Users {
@@ -58,6 +58,15 @@ export interface Interaction {
   userId: string;
   upVoting: string;
   downVoting: string;
+}
+
+export interface PostContent {
+  user: User | undefined;
+  postDetails: PostDetails | undefined;
+}
+
+export interface ListPostContent {
+  postcontent: PostContent[];
 }
 
 export interface Comments {
@@ -102,15 +111,15 @@ export interface UserServiceClient {
 
   /** * Create a Post for a particular user procedure * */
 
-  createPost(request: CreatePostDto): Observable<User>;
+  createPost(request: CreatePostDto): Observable<PostContent>;
 
-  findAllPost(request: Empty): Observable<Users>;
+  findAllPost(request: Empty): Observable<ListPostContent>;
 
-  findOnePost(request: FindOnePostDto): Observable<User>;
+  findOnePost(request: FindOnePostDto): Observable<PostContent>;
 
-  updatePost(request: UpdatePostDto): Observable<User>;
+  updatePost(request: UpdatePostDto): Observable<PostContent>;
 
-  removePost(request: FindOnePostDto): Observable<User>;
+  removePost(request: FindOnePostDto): Observable<PostContent>;
 
   /** *************** Return a large amount of POST data, return a stream ******************************** */
 
@@ -134,15 +143,15 @@ export interface UserServiceController {
 
   /** * Create a Post for a particular user procedure * */
 
-  createPost(request: CreatePostDto): Promise<User> | Observable<User> | User;
+  createPost(request: CreatePostDto): Promise<PostContent> | Observable<PostContent> | PostContent;
 
-  findAllPost(request: Empty): Promise<Users> | Observable<Users> | Users;
+  findAllPost(request: Empty): Promise<ListPostContent> | Observable<ListPostContent> | ListPostContent;
 
-  findOnePost(request: FindOnePostDto): Promise<User> | Observable<User> | User;
+  findOnePost(request: FindOnePostDto): Promise<PostContent> | Observable<PostContent> | PostContent;
 
-  updatePost(request: UpdatePostDto): Promise<User> | Observable<User> | User;
+  updatePost(request: UpdatePostDto): Promise<PostContent> | Observable<PostContent> | PostContent;
 
-  removePost(request: FindOnePostDto): Promise<User> | Observable<User> | User;
+  removePost(request: FindOnePostDto): Promise<PostContent> | Observable<PostContent> | PostContent;
 
   /** *************** Return a large amount of POST data, return a stream ******************************** */
 

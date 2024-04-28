@@ -8,15 +8,15 @@ import {
 import { CacheService } from '../cache/cache.service';
 import { error } from '../utils/responses';
 import { Request, Response } from 'express';
-import * as jwt from 'jsonwebtoken';
 import { AuthorizationService } from './authorization.service';
-
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
   constructor(
     @Inject(CacheService) private readonly cacheService: CacheService,
     @Inject(AuthorizationService)
     private readonly authSvc: AuthorizationService,
+    private jwt: JwtService,
   ) {}
 
   async use(req: Request, res: Response, next: () => any) {
@@ -57,7 +57,7 @@ export class AuthMiddleware implements NestMiddleware {
     }
 
     try {
-      const { userId } = jwt.verify(token, secret, { algorithm: 'HS512' });
+      const { userId } = await this.jwt.verifyAsync(token, { secret });
       let user = await this.authSvc.getUserAuthority(userId);
       user = typeof user === 'string' ? JSON.parse(user) : user;
       // attached authenticated user to header
@@ -68,9 +68,7 @@ export class AuthMiddleware implements NestMiddleware {
 
       req.headers['user'] = JSON.stringify({
         id: user.id,
-        email: user.email || '',
-        roles: user.roles,
-        permissions: user.permissions,
+        username: user.username || '',
       });
     } catch (err) {
       Logger.error(err);

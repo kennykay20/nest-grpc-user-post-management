@@ -7,23 +7,23 @@ service UserService {
     rpc CreateUser (CreateUserDto) returns (User) {}
 
     /*** Create a Post for a particular user procedure **/
-    rpc CreatePost (CreatePostDto) returns (User) {}
+    rpc CreatePost (CreatePostDto) returns (PostContent) {}
 
     /********** Get All Listed Posts **************/
 
-    rpc FindAllPost (Empty) returns (Users) {}
+    rpc FindAllPost (Empty) returns (ListPostContent) {}
 
     /*********** Get a single post by id ************/
 
-    rpc FindOnePost (FindOnePostDto) returns (User) {}
+    rpc FindOnePost (FindOnePostDto) returns (PostContent) {}
 
     /*************  Update a user Post ****************/
     
-    rpc UpdatePost (UpdatePostDto) returns (User) {}
+    rpc UpdatePost (UpdatePostDto) returns (PostContent) {}
 
     /************** Delete a single Post by id ******************/
     
-    rpc RemovePost (FindOnePostDto) returns (User) {}
+    rpc RemovePost (FindOnePostDto) returns (PostContent) {}
 
     /***************** Return a large amount of POST data, return a stream *********************************/
     rpc QueryUsers (stream PaginationDto) returns (stream Users) {}
@@ -78,11 +78,11 @@ message User {
     string first_name = 1;
     string last_name = 2;
     string image_url = 3;
-    PostDetails post_details = 4;
-    string create_at = 5;
-    string update_at = 6;
-    string username = 7;
-    string phone = 8;
+    string create_at = 4;
+    string update_at = 5;
+    string username = 6;
+    string phone = 7;
+    string token = 8;
 }
 
 message Users {
@@ -97,6 +97,15 @@ message Interaction {
     string user_id = 1;
     string up_voting = 2;
     string down_voting = 3;
+}
+
+message PostContent {
+    User user = 1;
+    PostDetails post_details = 2;
+}
+
+message ListPostContent {
+    repeated PostContent postcontent = 1;
 }
 
 message Comments {

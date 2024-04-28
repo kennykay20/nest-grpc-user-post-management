@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, Logger } from '@nestjs/common';
 import { Metadata } from '@grpc/grpc-js';
 import { RpcException } from '@nestjs/microservices';
 import { InjectEntityManager } from '@nestjs/typeorm';
@@ -16,6 +16,8 @@ import {
 } from '@app/common';
 import { sendOtpToUser } from '../event/send-email';
 import { Authentication } from '../utils/auth';
+import { JwtService } from '@nestjs/jwt';
+import { config } from '../config';
 
 @Injectable()
 export class UserService {
@@ -24,6 +26,7 @@ export class UserService {
   constructor(
     @InjectEntityManager()
     private readonly entityManager: EntityManager,
+    private jwt: JwtService,
   ) {
     this.userRepository = entityManager.getRepository(User);
   }
@@ -220,31 +223,29 @@ export class UserService {
       }
     }
 
-    let flag: boolean;
+    let isMatch: boolean;
 
     if (user.password) {
       const salt = user.password.split('.')[0];
       const hashPassword = user.password.split('.')[1];
 
-      flag = Authentication.comparePassword(password, hashPassword, salt);
+      isMatch = Authentication.comparePassword(password, hashPassword, salt);
     }
 
-    if (!flag) {
+    if (!isMatch) {
       throw new RpcException('Invalid Password');
     }
-    const resp: any = Object.assign({}, user);
 
-    resp.passwordExist = true;
+    const payload = {
+      userId: user.id,
+      username: user.username,
+    };
+    const accessToken = await this.signInToken(payload);
+    if (!accessToken) {
+      throw new ForbiddenException();
+    }
 
-    resp.company = !resp.company
-      ? null
-      : {
-          id: resp.company.id,
-          name: resp.company.name,
-          email: resp.company.email,
-        };
-
-    return resp;
+    return { ...user, accessToken };
   }
 
   generateOtp() {
@@ -314,4 +315,17 @@ export class UserService {
       return acc;
     }, {});
   }
+
+  signInToken = async (args: { userId: string; username: string }) => {
+    try {
+      const payload = { id: args.userId, email: args.username };
+      const accessToken = await this.jwt.signAsync(payload, {
+        secret: config.SECRET_KEY,
+      });
+      return accessToken;
+    } catch (error) {
+      Logger.error(error, 'Error signin Token :');
+      throw new Error('Token failed to generate');
+    }
+  };
 }

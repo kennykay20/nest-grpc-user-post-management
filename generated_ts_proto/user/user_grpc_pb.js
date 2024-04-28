@@ -59,6 +59,17 @@ function deserialize_user_FindOneUserDto(buffer_arg) {
   return user_user_pb.FindOneUserDto.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_user_ListPostContent(arg) {
+  if (!(arg instanceof user_user_pb.ListPostContent)) {
+    throw new Error('Expected argument of type user.ListPostContent');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_user_ListPostContent(buffer_arg) {
+  return user_user_pb.ListPostContent.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_user_LoginNoPassResponse(arg) {
   if (!(arg instanceof user_user_pb.LoginNoPassResponse)) {
     throw new Error('Expected argument of type user.LoginNoPassResponse');
@@ -101,6 +112,17 @@ function serialize_user_PaginationDto(arg) {
 
 function deserialize_user_PaginationDto(buffer_arg) {
   return user_user_pb.PaginationDto.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_user_PostContent(arg) {
+  if (!(arg instanceof user_user_pb.PostContent)) {
+    throw new Error('Expected argument of type user.PostContent');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_user_PostContent(buffer_arg) {
+  return user_user_pb.PostContent.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_user_UpdatePostDto(arg) {
@@ -166,11 +188,11 @@ createPost: {
     requestStream: false,
     responseStream: false,
     requestType: user_user_pb.CreatePostDto,
-    responseType: user_user_pb.User,
+    responseType: user_user_pb.PostContent,
     requestSerialize: serialize_user_CreatePostDto,
     requestDeserialize: deserialize_user_CreatePostDto,
-    responseSerialize: serialize_user_User,
-    responseDeserialize: deserialize_user_User,
+    responseSerialize: serialize_user_PostContent,
+    responseDeserialize: deserialize_user_PostContent,
   },
   // ********* Get All Listed Posts *************
 //
@@ -179,11 +201,11 @@ findAllPost: {
     requestStream: false,
     responseStream: false,
     requestType: user_user_pb.Empty,
-    responseType: user_user_pb.Users,
+    responseType: user_user_pb.ListPostContent,
     requestSerialize: serialize_user_Empty,
     requestDeserialize: deserialize_user_Empty,
-    responseSerialize: serialize_user_Users,
-    responseDeserialize: deserialize_user_Users,
+    responseSerialize: serialize_user_ListPostContent,
+    responseDeserialize: deserialize_user_ListPostContent,
   },
   // ********** Get a single post by id ***********
 //
@@ -192,11 +214,11 @@ findOnePost: {
     requestStream: false,
     responseStream: false,
     requestType: user_user_pb.FindOnePostDto,
-    responseType: user_user_pb.User,
+    responseType: user_user_pb.PostContent,
     requestSerialize: serialize_user_FindOnePostDto,
     requestDeserialize: deserialize_user_FindOnePostDto,
-    responseSerialize: serialize_user_User,
-    responseDeserialize: deserialize_user_User,
+    responseSerialize: serialize_user_PostContent,
+    responseDeserialize: deserialize_user_PostContent,
   },
   // ************  Update a user Post ***************
 //
@@ -205,11 +227,11 @@ updatePost: {
     requestStream: false,
     responseStream: false,
     requestType: user_user_pb.UpdatePostDto,
-    responseType: user_user_pb.User,
+    responseType: user_user_pb.PostContent,
     requestSerialize: serialize_user_UpdatePostDto,
     requestDeserialize: deserialize_user_UpdatePostDto,
-    responseSerialize: serialize_user_User,
-    responseDeserialize: deserialize_user_User,
+    responseSerialize: serialize_user_PostContent,
+    responseDeserialize: deserialize_user_PostContent,
   },
   // ************* Delete a single Post by id *****************
 //
@@ -218,11 +240,11 @@ removePost: {
     requestStream: false,
     responseStream: false,
     requestType: user_user_pb.FindOnePostDto,
-    responseType: user_user_pb.User,
+    responseType: user_user_pb.PostContent,
     requestSerialize: serialize_user_FindOnePostDto,
     requestDeserialize: deserialize_user_FindOnePostDto,
-    responseSerialize: serialize_user_User,
-    responseDeserialize: deserialize_user_User,
+    responseSerialize: serialize_user_PostContent,
+    responseDeserialize: deserialize_user_PostContent,
   },
   // **************** Return a large amount of POST data, return a stream ********************************
 queryUsers: {

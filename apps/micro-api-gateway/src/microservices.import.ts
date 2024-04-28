@@ -12,8 +12,11 @@ export const microservices = [
         transport: Transport.GRPC,
         options: {
           package: USER_PACKAGE_NAME,
-          protoPath: join(__dirname, '../../app/user/user.proto'),
-          url: `0.0.0.0:${config.postServiceUrl}`,
+          protoPath: join(
+            __dirname,
+            '../../micro-user-service/user/user.proto',
+          ),
+          url: `0.0.0.0:${config.userServiceUrl}`,
         },
       }),
     },

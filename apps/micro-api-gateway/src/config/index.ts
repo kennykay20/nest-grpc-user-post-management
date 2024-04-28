@@ -27,7 +27,7 @@ if (error) {
 export const config = {
   port: envVar.HTTP_PORT,
   NODE_ENV: envVar.NODE_ENV,
-  postServiceUrl: envVar.POST_SVC,
+  userServiceUrl: envVar.POST_SVC,
   redisUrl: envVar.REDIS_URL,
   SECRET_KEY: envVar.SECRET_KEY,
 };

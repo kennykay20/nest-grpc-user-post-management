@@ -25,25 +25,27 @@ const schemaValidate = joi
       .falsy('FALSE')
       .falsy('false')
       .default(false),
+    SECRET_KEY: joi.string(),
   })
   .unknown()
   .required();
 
-const { error, value: envValue } = schemaValidate.validate(process.env);
+const { error, value: envVar } = schemaValidate.validate(process.env);
 
 if (error) {
   throw new Error(`Config validation error: ${error.message}`);
 }
 
 export const config = {
-  port: envValue.GRPC_PORT,
-  NODE_ENV: envValue.NODE_ENV,
+  port: envVar.GRPC_PORT,
+  NODE_ENV: envVar.NODE_ENV,
   db: {
-    port: envValue.PGPORT,
-    host: envValue.PGHOST,
-    username: envValue.PGUSER,
-    password: envValue.PGPASSWORD,
-    name: envValue.PGDATABASE,
-    logging: envValue.DATABASE_LOGGING,
+    port: envVar.PGPORT,
+    host: envVar.PGHOST,
+    username: envVar.PGUSER,
+    password: envVar.PGPASSWORD,
+    name: envVar.PGDATABASE,
+    logging: envVar.DATABASE_LOGGING,
   },
+  SECRET_KEY: envVar.SECRET_KEY,
 };
